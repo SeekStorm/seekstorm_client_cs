@@ -1,0 +1,63 @@
+name: Publish NuGet
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "NuGet version override (for example: 0.2.0). Leave empty to use csproj version."
+        required: false
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Resolve package version
+        id: version
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          elif [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION=""
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Resolved package version: ${VERSION:-<from csproj>}"
+
+      - name: Restore
+        run: dotnet restore SeekStorm.Client/SeekStorm.Client.csproj
+
+      - name: Build
+        run: dotnet build SeekStorm.Client/SeekStorm.Client.csproj -c Release --no-restore
+
+      - name: Pack
+        shell: bash
+        run: |
+          if [ -n "${{ steps.version.outputs.version }}" ]; then
+            dotnet pack SeekStorm.Client/SeekStorm.Client.csproj -c Release --no-build -o artifacts /p:PackageVersion=${{ steps.version.outputs.version }} /p:Version=${{ steps.version.outputs.version }} /p:InformationalVersion=${{ steps.version.outputs.version }}
+          else
+            dotnet pack SeekStorm.Client/SeekStorm.Client.csproj -c Release --no-build -o artifacts
+          fi
+
+      - name: Publish package
+        run: dotnet nuget push "artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+
+      - name: Publish symbols
+        run: dotnet nuget push "artifacts/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate

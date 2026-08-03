@@ -1,0 +1,58 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+out/
+artifacts/
+TestResults/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.rsuser
+*.sln.docstates
+
+# IDE settings
+.vs/
+.vscode/
+.idea/
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# .NET generated files
+project.lock.json
+project.fragment.lock.json
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local environment and secrets
+.env
+.env.*
+*.local
+
+# Coverage and profiling
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+*.bak
+*~
