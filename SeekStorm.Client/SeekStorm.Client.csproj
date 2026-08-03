@@ -5,11 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>SeekStorm.Client</PackageId>
-    <Title>SeekStorm .NET REST Client</Title>
-    <Description>Typed .NET client for the SeekStorm vector and lexical REST server.</Description>
-    <Authors>SeekStorm Contributors</Authors>
-    <Company>SeekStorm</Company>
-    <PackageTags>seekstorm;search;vector-search;lexical-search;rest;client</PackageTags>
+    <Title>SeekStorm C# REST Client</Title>
+    <Product>SeekStorm C# REST Client</Product>
+    <Description>Typed .NET client for the SeekStorm vector and lexical search server.</Description>
+    <Copyright>Copyright (C) 2026 Wolf Garbe</Copyright>
+    <Authors>Wolf Garbe &lt;wolf.garbe@seekstorm.com&gt;</Authors>
+    <Company>Wolf Garbe &lt;wolf.garbe@seekstorm.com&gt;</Company>
+    <PackageTags>seekstorm;search;vector-search;lexical-search;hybrid-search;rest-client</PackageTags>
     <PackageProjectUrl>https://github.com/SeekStorm/seekstorm_client_cs</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SeekStorm/seekstorm_client_cs</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
