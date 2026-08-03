@@ -7,6 +7,7 @@ seekstorm_client_cs is open source licensed under the [Apache License 2.0](https
 
 ## SeekStorm REST client (C#)
 [![NuGet version](https://badge.fury.io/nu/SeekStorm.Client.svg)](https://badge.fury.io/nu/SeekStorm.Client)
+[![.NET](https://img.shields.io/badge/.NET-8.0-purple)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/SeekStorm/seekstorm_client_cs?tab=Apache-2.0-1-ov-file#readme)
 
 ## SeekStorm REST client (Pure Python)
