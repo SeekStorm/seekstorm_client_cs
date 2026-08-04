@@ -3,102 +3,196 @@ using System.Text.Json.Serialization;
 
 namespace SeekStorm.Client;
 
+/// <summary>
+/// Lexical ranking strategy used by SeekStorm for text relevance scoring.
+/// Maps to <c>seekstorm::index::LexicalSimilarity</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum LexicalSimilarity
 {
+    /// <summary>
+    /// BM25F ranking.
+    /// </summary>
     Bm25f,
+
+    /// <summary>
+    /// BM25F ranking with proximity-aware scoring.
+    /// </summary>
     Bm25fProximity,
 }
 
+/// <summary>
+/// Tokenization strategy for lexical indexing.
+/// Maps to <c>seekstorm::index::TokenizerType</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum TokenizerType
 {
+    /// <summary>ASCII alphabetic tokenizer.</summary>
     AsciiAlphabetic,
+    /// <summary>Unicode alphanumeric tokenizer.</summary>
     UnicodeAlphanumeric,
+    /// <summary>Unicode alphanumeric tokenizer with diacritic/case folding.</summary>
     UnicodeAlphanumericFolded,
+    /// <summary>Unicode tokenizer optimized for Chinese text segmentation.</summary>
     UnicodeAlphanumericZH,
 }
 
+/// <summary>
+/// Stemmer language selection used during indexing and querying.
+/// Maps to <c>seekstorm::index::StemmerType</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum StemmerType
 {
+    /// <summary>No stemming.</summary>
     None,
+    /// <summary>English stemmer.</summary>
     English,
+    /// <summary>German stemmer.</summary>
     German,
+    /// <summary>Spanish stemmer.</summary>
     Spanish,
+    /// <summary>French stemmer.</summary>
     French,
+    /// <summary>Italian stemmer.</summary>
     Italian,
+    /// <summary>Portuguese stemmer.</summary>
     Portuguese,
+    /// <summary>Russian stemmer.</summary>
     Russian,
 }
 
+/// <summary>
+/// Stopword list language selection.
+/// Maps to <c>seekstorm::index::StopwordType</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum StopwordType
 {
+    /// <summary>No stopword filtering.</summary>
     None,
+    /// <summary>English stopword list.</summary>
     English,
+    /// <summary>German stopword list.</summary>
     German,
+    /// <summary>Spanish stopword list.</summary>
     Spanish,
+    /// <summary>French stopword list.</summary>
     French,
+    /// <summary>Italian stopword list.</summary>
     Italian,
+    /// <summary>Portuguese stopword list.</summary>
     Portuguese,
+    /// <summary>Russian stopword list.</summary>
     Russian,
 }
 
+/// <summary>
+/// Frequent word list language selection.
+/// Maps to <c>seekstorm::index::FrequentwordType</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum FrequentwordType
 {
+    /// <summary>No frequent-word filtering.</summary>
     None,
+    /// <summary>English frequent-word list.</summary>
     English,
+    /// <summary>German frequent-word list.</summary>
     German,
+    /// <summary>Spanish frequent-word list.</summary>
     Spanish,
+    /// <summary>French frequent-word list.</summary>
     French,
+    /// <summary>Italian frequent-word list.</summary>
     Italian,
+    /// <summary>Portuguese frequent-word list.</summary>
     Portuguese,
+    /// <summary>Russian frequent-word list.</summary>
     Russian,
 }
 
+/// <summary>
+/// Compression algorithm for stored source documents.
+/// Maps to <c>seekstorm::index::DocumentCompression</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum DocumentCompression
 {
+    /// <summary>No compression.</summary>
     None,
+    /// <summary>LZ4 compression.</summary>
     Lz4,
+    /// <summary>Snappy compression.</summary>
     Snappy,
+    /// <summary>Zstandard compression.</summary>
     Zstd,
 }
 
+/// <summary>
+/// Shape of the returned search response.
+/// Maps to <c>seekstorm::search::ResultType</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ResultType
 {
+    /// <summary>Return only counts.</summary>
     Count,
+    /// <summary>Return top results without global count.</summary>
     Topk,
+    /// <summary>Return top results plus global count.</summary>
     TopkCount,
 }
 
+/// <summary>
+/// Boolean query operator for unqualified terms.
+/// Maps to <c>seekstorm::search::QueryType</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum QueryType
 {
+    /// <summary>OR semantics between terms.</summary>
     Union,
+    /// <summary>AND semantics between terms.</summary>
     Intersection,
+    /// <summary>Exact phrase matching.</summary>
     Phrase,
+    /// <summary>Negation query.</summary>
     Not,
 }
 
+/// <summary>
+/// Query rewriting mode.
+/// Maps to <c>seekstorm::search::QueryRewriting</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum QueryRewriting
 {
+    /// <summary>Disable rewriting and run only the user query.</summary>
     SearchOnly,
+    /// <summary>Enable automatic query rewriting if beneficial.</summary>
     Auto,
 }
 
+/// <summary>
+/// Search strategy combining lexical and/or vector retrieval.
+/// Maps to <c>seekstorm::search::SearchMode</c>.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum SearchMode
 {
+    /// <summary>Lexical search only.</summary>
     Lexical,
+    /// <summary>Vector search only.</summary>
     Vector,
+    /// <summary>Hybrid lexical plus vector search.</summary>
     Hybrid,
 }
 
+/// <summary>
+/// Schema field data type declaration.
+/// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum FieldType
 {
@@ -124,24 +218,37 @@ public enum FieldType
     Binary,
 }
 
+/// <summary>
+/// Lightweight health endpoint response.
+/// </summary>
 public sealed class LiveResponse
 {
     [JsonPropertyName("message")]
     public string Message { get; init; } = string.Empty;
 }
 
+/// <summary>
+/// Response containing a newly created API key.
+/// </summary>
 public sealed class ApiKeyResponse
 {
     [JsonPropertyName("api_key_base64")]
     public string ApiKeyBase64 { get; init; } = string.Empty;
 }
 
+/// <summary>
+/// Response with the number of API keys still available for creation.
+/// </summary>
 public sealed class RemainingApiKeysResponse
 {
     [JsonPropertyName("remaining_api_keys")]
     public ulong RemainingApiKeys { get; init; }
 }
 
+/// <summary>
+/// API key quota limits.
+/// Maps to <c>seekstorm::index::ApikeyQuotaObject</c>.
+/// </summary>
 public sealed class ApikeyQuotaObject
 {
     [JsonPropertyName("indices_max")]
@@ -163,6 +270,9 @@ public sealed class ApikeyQuotaObject
     public bool Demo { get; init; }
 }
 
+/// <summary>
+/// Request payload for deleting an API key.
+/// </summary>
 public sealed class DeleteApikeyRequest
 {
     [JsonPropertyName("apikey_base64")]
@@ -171,9 +281,15 @@ public sealed class DeleteApikeyRequest
 
 public sealed class SchemaField
 {
+    /// <summary>
+    /// Field name used in indexed documents.
+    /// </summary>
     [JsonPropertyName("field")]
     public string Field { get; init; } = string.Empty;
 
+    /// <summary>
+    /// Storage and indexing type of the field.
+    /// </summary>
     [JsonPropertyName("field_type")]
     public FieldType FieldType { get; init; }
 
@@ -202,36 +318,57 @@ public sealed class SchemaField
     public bool? CompletionSource { get; init; }
 }
 
+/// <summary>
+/// Dynamic synonym configuration entry.
+/// </summary>
 public sealed class Synonym
 {
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? Properties { get; init; }
 }
 
+/// <summary>
+/// Dynamic spelling-correction configuration.
+/// </summary>
 public sealed class SpellingCorrectionConfig
 {
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? Properties { get; init; }
 }
 
+/// <summary>
+/// Dynamic query-completion configuration.
+/// </summary>
 public sealed class QueryCompletionConfig
 {
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? Properties { get; init; }
 }
 
+/// <summary>
+/// Dynamic clustering configuration.
+/// Maps to <c>seekstorm::index::Clustering</c> shape.
+/// </summary>
 public sealed class ClusteringConfig
 {
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? Properties { get; init; }
 }
 
+/// <summary>
+/// Vector inference configuration payload.
+/// Maps to <c>seekstorm::vector::Inference</c> shape.
+/// </summary>
 public sealed class InferenceConfig
 {
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? Properties { get; init; }
 }
 
+/// <summary>
+/// Request payload used to create an index.
+/// Maps to <c>seekstorm::index::CreateIndexRequest</c>.
+/// </summary>
 public sealed class CreateIndexRequest
 {
     [JsonPropertyName("index_name")]
@@ -240,9 +377,15 @@ public sealed class CreateIndexRequest
     [JsonPropertyName("schema")]
     public List<SchemaField> Schema { get; init; } = new();
 
+    /// <summary>
+    /// Lexical scoring algorithm. Enum-typed for IntelliSense completion.
+    /// </summary>
     [JsonPropertyName("similarity")]
     public LexicalSimilarity? Similarity { get; init; }
 
+    /// <summary>
+    /// Tokenizer mode. Enum-typed for IntelliSense completion.
+    /// </summary>
     [JsonPropertyName("tokenizer")]
     public TokenizerType? Tokenizer { get; init; }
 
@@ -277,6 +420,10 @@ public sealed class CreateIndexRequest
     public InferenceConfig? Inference { get; init; }
 }
 
+/// <summary>
+/// Request payload for iterating indexed documents.
+/// Maps to <c>seekstorm::index::GetIteratorRequest</c>.
+/// </summary>
 public sealed class GetIteratorRequest
 {
     [JsonPropertyName("document_id")]
@@ -298,6 +445,10 @@ public sealed class GetIteratorRequest
     public List<string> Fields { get; init; } = new();
 }
 
+/// <summary>
+/// Highlight configuration used in search and get-document requests.
+/// Maps to <c>seekstorm::highlighter::Highlight</c>.
+/// </summary>
 public sealed class Highlight
 {
     [JsonPropertyName("field")]
@@ -322,24 +473,36 @@ public sealed class Highlight
     public string? PostTags { get; init; }
 }
 
+/// <summary>
+/// Dynamic distance-field descriptor used in retrieval.
+/// </summary>
 public sealed class DistanceField
 {
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? Properties { get; init; }
 }
 
+/// <summary>
+/// Dynamic facet request entry.
+/// </summary>
 public sealed class QueryFacet
 {
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? Properties { get; init; }
 }
 
+/// <summary>
+/// Dynamic facet filter entry.
+/// </summary>
 public sealed class FacetFilterItem
 {
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? Properties { get; init; }
 }
 
+/// <summary>
+/// Dynamic result sort entry.
+/// </summary>
 public sealed class ResultSortItem
 {
     [JsonExtensionData]
@@ -348,6 +511,9 @@ public sealed class ResultSortItem
 
 public sealed class GetDocumentRequest
 {
+    /// <summary>
+    /// Query terms used to compute highlights for the retrieved document.
+    /// </summary>
     [JsonPropertyName("query_terms")]
     public List<string> QueryTerms { get; init; } = new();
 
@@ -361,6 +527,10 @@ public sealed class GetDocumentRequest
     public List<DistanceField> DistanceFields { get; init; } = new();
 }
 
+/// <summary>
+/// Search request builder model.
+/// Maps to <c>seekstorm::index::SearchRequestObject</c>.
+/// </summary>
 public sealed class SearchRequestObject
 {
     [JsonIgnore]
@@ -378,6 +548,9 @@ public sealed class SearchRequestObject
     [JsonPropertyName("length")]
     public int Length { get; init; } = 10;
 
+    /// <summary>
+    /// Result payload shape. Enum-typed for IntelliSense completion.
+    /// </summary>
     [JsonPropertyName("result_type")]
     public ResultType ResultType { get; init; } = ResultType.TopkCount;
 
@@ -405,12 +578,21 @@ public sealed class SearchRequestObject
     [JsonPropertyName("result_sort")]
     public List<ResultSortItem> ResultSort { get; init; } = new();
 
+    /// <summary>
+    /// Default boolean operator for terms without explicit operator.
+    /// </summary>
     [JsonPropertyName("query_type_default")]
     public QueryType QueryTypeDefault { get; init; } = QueryType.Intersection;
 
+    /// <summary>
+    /// Query rewriting mode. Enum-typed for IntelliSense completion.
+    /// </summary>
     [JsonPropertyName("query_rewriting")]
     public QueryRewriting QueryRewriting { get; init; } = QueryRewriting.SearchOnly;
 
+    /// <summary>
+    /// Retrieval mode (lexical, vector, or hybrid). Enum-typed for IntelliSense completion.
+    /// </summary>
     [JsonPropertyName("search_mode")]
     public SearchMode SearchMode { get; init; } = SearchMode.Lexical;
 
@@ -439,6 +621,9 @@ public sealed class SearchRequestObject
     }
 }
 
+/// <summary>
+/// Serialized search payload sent to the REST API.
+/// </summary>
 public sealed class SearchRequestPayload
 {
     [JsonPropertyName("query")]
@@ -504,6 +689,9 @@ public sealed class UpdateDocumentRequest
     public object[] ToPayload() => new object[] { DocId, Document };
 }
 
+/// <summary>
+/// Batch update request for multiple documents.
+/// </summary>
 public sealed class UpdateDocumentsRequest
 {
     [JsonPropertyName("items")]
@@ -512,24 +700,36 @@ public sealed class UpdateDocumentsRequest
     public List<object[]> ToPayload() => Items.Select(i => i.ToPayload()).ToList();
 }
 
+/// <summary>
+/// Response returned after index creation.
+/// </summary>
 public sealed class CreateIndexResponse
 {
     [JsonPropertyName("index_id")]
     public ulong IndexId { get; init; }
 }
 
+/// <summary>
+/// Response with remaining index creation quota.
+/// </summary>
 public sealed class RemainingIndicesResponse
 {
     [JsonPropertyName("remaining_indices")]
     public ulong RemainingIndices { get; init; }
 }
 
+/// <summary>
+/// Response containing currently indexed document count.
+/// </summary>
 public sealed class IndexedDocumentCountResponse
 {
     [JsonPropertyName("indexed_document_count")]
     public ulong IndexedDocumentCount { get; init; }
 }
 
+/// <summary>
+/// Index metadata descriptor used in API-key info responses.
+/// </summary>
 public sealed class IndexResponseObject
 {
     [JsonPropertyName("id")]
@@ -560,12 +760,19 @@ public sealed class IndexResponseObject
     public Dictionary<string, Dictionary<string, JsonElement>> FacetsMinmax { get; init; } = new();
 }
 
+/// <summary>
+/// API key information response containing accessible indices.
+/// </summary>
 public sealed class ApikeyInfoResponse
 {
     [JsonPropertyName("indices")]
     public List<IndexResponseObject> Indices { get; init; } = new();
 }
 
+/// <summary>
+/// Item returned by iterator endpoint.
+/// Maps to <c>seekstorm::iterator::IteratorResultItem</c>.
+/// </summary>
 public sealed class IteratorResultItem
 {
     [JsonPropertyName("doc_id")]
@@ -575,6 +782,10 @@ public sealed class IteratorResultItem
     public Dictionary<string, JsonElement>? Doc { get; init; }
 }
 
+/// <summary>
+/// Iterator response page.
+/// Maps to <c>seekstorm::iterator::IteratorResult</c>.
+/// </summary>
 public sealed class IteratorResult
 {
     [JsonPropertyName("skip")]
@@ -590,12 +801,19 @@ public sealed class DocumentResponse
     public Dictionary<string, JsonElement> Document { get; init; } = new();
 }
 
+/// <summary>
+/// Raw PDF export response.
+/// </summary>
 public sealed class PdfResponse
 {
     [JsonPropertyName("content")]
     public byte[] Content { get; init; } = Array.Empty<byte>();
 }
 
+/// <summary>
+/// Search response payload.
+/// Maps to <c>seekstorm::index::SearchResultObject</c>.
+/// </summary>
 public sealed class SearchResultObject
 {
     [JsonPropertyName("time")]
