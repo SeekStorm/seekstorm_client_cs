@@ -106,6 +106,8 @@ await client.IndexDocumentAsync(createIndex.IndexId, new Dictionary<string, obje
     ["title"] = "hello seekstorm"
 });
 
+await client.CommitIndexAsync(createIndex.IndexId);
+
 var result = await client.QueryIndexAsync(createIndex.IndexId, new SearchRequestObject
 {
     QueryString = "hello",
